@@ -12,6 +12,7 @@ describe User do
 	it { should respond_to(:password_digest) }
 	it { should respond_to(:password) }
 	it { should respond_to(:password_confirmation) }
+	it { should respond_to(:remember_token) }
 	it { should respond_to(:authenticate) }
 
 	it { should be_valid }
@@ -94,5 +95,10 @@ describe User do
 			it { should_not eq user_for_invalid_passowrd }
 			specify { expect(user_for_invalid_passowrd).to be_false }
 		end
+	end
+
+	describe "remember_token" do
+		before { @user.save }
+		its(:remember_token) { should_not be_blank }
 	end
 end
