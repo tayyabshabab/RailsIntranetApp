@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
-  before_action :signed_in_user, only: [:edit, :update]
-  before_action :correct_user, only: [:edit, :delete]
-  before_action :admin_user, only: :destroy
+  before_action :signed_in_user, only: [:index, :edit, :update]
+  before_action :correct_user, only: [:edit, :update, :delete]
+  before_action :admin_user, only: [:index, :destroy]
 
   def index
     @users = User.paginate(page: params[:page])
@@ -19,6 +19,7 @@ class UsersController < ApplicationController
   	@user = User.new(user_params)
   	if @user.save
   		flash[:success] = "Welcome to the Sample App!"
+      sign_in @user
   		redirect_to @user
   	else
   		render 'new'

@@ -6,18 +6,18 @@ describe "UserPages" do
 
   describe "index" do
 
-  	let(:user) { FactoryGirl.create(:user) }
+  	let(:user) { FactoryGirl.create(:admin ) }
 
   	before (:each) do
   		sign_in user
   		visit users_path
   	end
 
-  	it { should have_title("All users") }
-  	it { should have_content("All users") }
+  	it { should_not have_title("All users") }
+  	it { should_not have_content("All users") }
 
   	describe "pagination" do
-  		before (:all) { 30.times { FactoryGirl.create(:user) } }
+  		before (:all) { 30.times { FactoryGirl.create(:admin) } }
   		after(:all) { User.delete_all }
 
   		it { should have_selector('div.pagination') }
@@ -111,11 +111,15 @@ describe "UserPages" do
 
   describe "edit" do
   	let(:user) { FactoryGirl.create(:user) }
-  	before { visit edit_user_path(user) }
+  	#before { visit edit_user_path(user) }
+    before do
+      sign_in :user, no_capybara: true
+      visit edit_user_path(:user)
+    end
 
   	describe "page" do
   		it { should have_content("Update your profile") }
-  		it { should have_title("Edit User") }
+  		it { should have_title("Edit user") }
   	end
 
   	describe "with invalid information" do
