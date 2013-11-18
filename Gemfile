@@ -16,6 +16,7 @@ gem 'jquery-rails'
 gem 'turbolinks'
 gem 'jbuilder'
 gem 'pg'
+gem "paperclip"
 
 group :doc do
   gem 'sdoc', '0.3.20', require: false

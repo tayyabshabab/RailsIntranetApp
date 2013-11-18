@@ -1,6 +1,11 @@
 IntranetApp::Application.routes.draw do
   root 'static_pages#home'
-  resources :users
+  resources :users do
+    member do
+      get :documents
+    end
+  end
+  resources :documents
   resources :sessions, only: [:new, :create, :destroy]
   match '/signup',  to: 'users#new',            via: 'get'
   match '/signin',  to: 'sessions#new',         via: 'get'

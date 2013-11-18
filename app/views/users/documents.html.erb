@@ -1,0 +1,21 @@
+<% provide(:title, "User Documents") %>
+<h1>View Documents</h1>
+
+<div class="right"><%= link_to "Create New Document", new_document_path %></div>
+
+<%= will_paginate @documents %>
+
+<ul class="users">
+  <% @documents.each do |document| %>
+    <li>
+      <%= link_to document.name, document %> |
+      <% if current_user.admin? && !current_user?(user) %>
+        | <%= link_to "edit", edit_user_path(user) %>
+        | <%= link_to "delete", user, method: :delete,
+                                      data: { confirm: "You sure?" } %>
+      <% end %>
+    </li>
+  <% end %>
+</ul>
+
+<%= will_paginate @documents %>

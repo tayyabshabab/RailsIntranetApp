@@ -201,6 +201,10 @@ input {
   @extend .error;
 }
 
+input[type="checkbox"], input[type="radio"]{
+  width: 7%;
+}
+
 /* Users index */
 
 .users {
