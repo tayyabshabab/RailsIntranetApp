@@ -3,14 +3,14 @@
 
 <div class="row">
   <div class="col-md-6">
-    <%= form_for(@document) do |f| %>
+    <%= form_for(@document, :html => { :multipart => true }) do |f| %>
     	<%= render 'shared/error_messages', object: f.object %>
 
       <%= f.label :name %>
       <%= f.text_field :name %>
 
-      <%= f.label(:file, "File to Upload") %>
-      <%= f.file_field :file %>
+      <%= f.label(:uploaded_file, "File to Upload") %>
+      <%= f.file_field :uploaded_file %>
 
       <%= f.label :visibility %>
       <span class="radio">
@@ -22,6 +22,9 @@
 	      <%= f.label(:visibility_1, "Public") %>
     	</span>
 
+      <%= f.label :tag_list %>
+      <%= f.text_field :tag_list, placeholder: "Tags separated by commas" %>
+      
       <%= f.submit "Upload document", class: "btn btn-large btn-primary" %>
     <% end %>
   </div>

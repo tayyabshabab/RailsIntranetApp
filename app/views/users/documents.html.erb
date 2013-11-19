@@ -1,21 +1,29 @@
 <% provide(:title, "User Documents") %>
 <h1>View Documents</h1>
 
-<div class="right"><%= link_to "Create New Document", new_document_path %></div>
+<div align="right" class="bottom-distance"><%= link_to "Create New Document", new_document_path, class: "btn btn-primary" %></div>
 
 <%= will_paginate @documents %>
 
-<ul class="users">
-  <% @documents.each do |document| %>
-    <li>
-      <%= link_to document.name, document %> |
-      <% if current_user.admin? && !current_user?(user) %>
-        | <%= link_to "edit", edit_user_path(user) %>
-        | <%= link_to "delete", user, method: :delete,
-                                      data: { confirm: "You sure?" } %>
-      <% end %>
-    </li>
-  <% end %>
-</ul>
+<% if !@documents.empty? %>
+  <table class="table">
+    <tr>
+      <th>Document Name</th>
+      <th>Options</th>
+    </tr>
+    <% @documents.each do |document| %>
+      <tr>
+        <td><%= document.name %></td>
+        <td>
+          <%= link_to "Download", download_path(document) %> | 
+          <%= link_to "Edit", edit_document_path(document) %> | 
+          <%= link_to "Delete", document, method: :delete, data: { confirm: "You sure?" } %>
+        </td>
+      </tr>
+    <% end %>
+  </table>
+<% else %>
+  <div class="alert alert-info">No document found</div>
+<% end %>
 
 <%= will_paginate @documents %>

@@ -1,0 +1,17 @@
+<% unless @documents.nil? %>
+  <h3 class="center">Shared Documents</h3>
+  <table class="table">
+    <tr>
+      <th>Document Name</th>
+      <th>Shared By</th>
+      <th></th>
+    </tr>
+    <% @documents.each do |document| %>
+      <tr>
+        <td><%= link_to document.name, download_path(document) %></td>
+        <td><%= document.user.name %></td>
+        <td><%= link_to "Download", download_path(document) %></td>
+      </tr>
+    <% end %>
+  </table>
+<% end %>

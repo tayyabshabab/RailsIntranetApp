@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
   before_action :signed_in_user, only: [:index, :edit, :update, :documents]
-  before_action :correct_user, only: [:edit, :update, :delete]
+  before_action :correct_user, only: [:edit, :update, :destroy]
   before_action :admin_user, only: [:index, :new, :create, :destroy]
 
   def index
@@ -30,7 +30,7 @@ class UsersController < ApplicationController
   end
 
   def update
-    @user = User.find(params[:id])
+    #@user = User.find(params[:id])
     if @user.update_attributes(user_params)
       flash[:success] = "Profile updated"
       redirect_to @user
@@ -47,7 +47,7 @@ class UsersController < ApplicationController
 
   def documents
     @user = User.find(params[:id])
-    @documents = @user.documents.paginate(page: params[:page])
+    @documents = @user.documents.order('created_at desc').paginate(page: params[:page])
   end
 
   private
