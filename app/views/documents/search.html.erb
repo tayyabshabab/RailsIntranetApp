@@ -1,30 +1,50 @@
 <% provide(:title, "Search") %>
 <h1>Search</h1>
 
-<div class="row">
-  <!-- <div class="col-md-6">
-    <%= form_for(Document.new, url: search_path, method: "get") do |f| %>
-    	<%= render 'shared/error_messages', object: f.object %>
+<div class="panel panel-default">
+  <div class="panel-heading">
+    <h3 class="panel-title">Search</h3>
+  </div>
+  <div class="panel-body">
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs">
+      <li><a href="#name-panel" data-toggle="tab">By name</a></li>
+      <li><a href="#tags-panel" data-toggle="tab">By tags</a></li>
+    </ul>
 
-      <%= f.label :name %>
-      <%= f.text_field :name %>
-
-      <%= f.label :tag_list %>
-      <%= f.text_field :tag_list, placeholder: "Tags separated by commas" %>
-
-      <%= f.submit "Search", class: "btn btn-large btn-primary" %>
-    <% end %>
-  </div> -->
-  <div class="col-md-6">
-    <%= form_tag search_path, method: 'get' do %>
-      <%= label_tag(:name, "Search for") %>
-      <%= text_field_tag(:name) %>
-
-      <%= label_tag(:tags, "Tags") %>
-      <%= text_field_tag(:tags) %>
-      <%= submit_tag "Search", class: "btn btn-large btn-primary" %>
-    <% end %>
+    <!-- Tab panes -->
+    <div class="tab-content">
+      <div class="tab-pane active" id="name-panel">
+        <%= form_tag search_path, method: 'get' do %>
+        <%= label_tag(:name, "Search for") %>
+        <%= text_field_tag :name, params[:name], placeholder: "Document to search", class: "form-control" %>
+        <%= submit_tag "Search", class: "btn btn-large btn-primary" %>
+      <% end %>
+      </div>
+      <div class="tab-pane" id="tags-panel">
+        <%= form_tag search_path, method: 'get' do %>
+        <%= label_tag(:tags, "Tags") %>
+        <%= text_field_tag :tags, params[:tags], placeholder: "Tags separated by commas", class: "form-control" %>
+        <%= submit_tag "Search", class: "btn btn-large btn-primary" %>
+      <% end %>
+      </div>
+    </div>
   </div>
 </div>
 
 <%= render 'shared/shared_documents' %>
+
+
+<% if @tags.nil? %>
+  <script type="text/javascript">
+    $(document).ready(function(){
+      $('.nav-tabs a[href="#name-panel"]').tab('show').alert('a') // Select tab by name
+    })
+  </script>
+<% else %>
+  <script type="text/javascript">
+    $(document).ready(function(){
+      $('.nav-tabs a[href="#tags-panel"]').tab('show').alert('a') // Select tab by name
+    })
+  </script>
+<% end %>

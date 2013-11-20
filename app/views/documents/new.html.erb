@@ -14,13 +14,13 @@
 
       <%= f.label :visibility %>
       <span class="radio">
-	      <%= f.radio_button(:visibility, "0", checked: true) %>
-	      <%= f.label(:visibility_0, "Protected") %>
-    	</span>
-    	<span class="radio">
-	      <%= f.radio_button(:visibility, "1") %>
-	      <%= f.label(:visibility_1, "Public") %>
-    	</span>
+        <%= f.radio_button(:visibility, "false", checked: true) %>
+        <%= f.label(:visibility_false, "Protected") %>
+      </span>
+      <span class="radio">
+        <%= f.radio_button(:visibility, "true") %>
+        <%= f.label(:visibility_true, "Public") %>
+      </span>
 
       <%= f.label :tag_list %>
       <%= f.text_field :tag_list, placeholder: "Tags separated by commas" %>

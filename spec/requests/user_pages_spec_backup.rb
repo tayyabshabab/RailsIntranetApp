@@ -11,11 +11,12 @@ describe "UserPages" do
     before do
       sign_in user
       visit users_path
+      puts(user.admin?.to_s)
     end
 
     it { should have_title("All users") }
     it { should have_content("All users") }
-    it { should have_link('Edit', href: edit_user_path(User.first)) }
+    it { should have_link('edit', href: edit_user_path(User.first)) }
 
     describe "pagination" do
       before (:all) { 30.times { FactoryGirl.create(:admin) } }
@@ -25,7 +26,7 @@ describe "UserPages" do
 
       it "should list each user" do
         User.paginate(page: 1) .each do |user|
-          expect(page).to have_selector('td', text: user.name)
+          expect(page).to have_selector('li', text: user.name)
         end
       end
     end
@@ -42,11 +43,11 @@ describe "UserPages" do
           visit users_path
         end
 
-        it { should have_link('Delete', href: user_path(User.first)) }
-        it { should have_link('Edit', href: edit_user_path(User.first)) }
+        it { should have_link('delete', href: user_path(User.first)) }
+        it { should have_link('edit', href: edit_user_path(User.first)) }
         it "should be able to delete another user" do
           expect do
-            click_link('Delete', match: :first)
+            click_link('delete', match: :first)
           end.to change(User, :count).by(-1)
         end
         it { should_not have_link('delete', href: user_path(admin)) }
@@ -56,12 +57,7 @@ describe "UserPages" do
         let(:user) { FactoryGirl.create(:user) }
         let(:non_admin) { FactoryGirl.create(:user) }
 
-        #before { sign_in non_admin, no_capybara: true }
-        before do
-          click_link('Sign out')
-          sign_in non_admin, no_capybara: true
-          #abort(URI.parse(current_url).to_s)
-        end
+        before { sign_in non_admin, no_capybara: true }
 
         describe "when visiting the edit page" do
           before { visit edit_user_path(user) }
@@ -69,24 +65,52 @@ describe "UserPages" do
         end
 
         describe "when submitting an EDIT request to the Users#edit action" do
-          #before { patch user_path(user) }
-          before do
-            patch user_path(user)
-            abort(current_user.name)
-            abort(non_admin.admin.to_s + " | " + user.admin.to_s)
-          end
-          specify { expect(response).to redirect_to(root_url) }
+          before { patch user_path(user) }
+          specify{ expect(response).to redirect_to(root_url) }
         end
 
-        # describe "when submitting an EDIT request to the Users#edit action" do
-        #   before { patch user_path(user) }
-        #   specify{ expect(response).to redirect_to(root_url) }
-        # end
+        describe "submitting a DELETE request to the Users#destroy action" do
+          before { delete user_path(user) }
+          specify { expect(response).to redirect_to(root_url) }
+        end
+      end
+    end
 
-        # describe "submitting a DELETE request to the Users#destroy action" do
-        #   before { delete user_path(user) }
-        #   specify { expect(response).to redirect_to(root_url) }
-        # end
+    it "should list each user" do
+      User.all.each do |user|
+        expect(page).to have_selector('td', text: user.name)
+      end
+    end
+
+    describe "signup page" do
+      before { visit signup_path }
+
+      it { should have_content("New user") }
+      it { should have_title(full_title("Sign up")) }
+    end
+
+    describe "signup" do
+      before { visit signup_path }
+
+      let(:submit) { "Create new account" }
+
+      describe "with invalid information" do
+        it "should not create a user" do
+          expect { click_button submit }.not_to change(User, :count)
+        end
+      end
+
+      describe "with valid information" do
+        before do
+          fill_in "Name",           with: "Tayyab Shabab"
+          fill_in "Email",          with: "tayyab@yahoo.com"
+          fill_in "Password",       with: "test123"
+          fill_in "Confirmation",   with: "test123"
+        end
+
+        it "should create a user" do
+          expect { click_button submit}.to change(User, :count).by(1)
+        end
       end
     end
   end

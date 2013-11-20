@@ -1,5 +1,5 @@
 class DocumentsController < ApplicationController
-	before_action :signed_in_user
+	before_action :signed_in_user, except: [:search, :download]
   before_action :correct_user, only: [:edit, :update, :destroy]
 
   def new
@@ -28,7 +28,12 @@ class DocumentsController < ApplicationController
   end
 
   def update
+    old_file = @document.file
     if (@document.update_attributes(document_params))
+      if @document.file != old_file
+        path = "public/documents/#{old_file}"
+        File.delete(path) if File.exist?(path)
+      end
       flash[:success] = "Document updated successfully!"
       redirect_to documents_user_path(current_user)
     else
@@ -44,21 +49,13 @@ class DocumentsController < ApplicationController
   end
 
   def search
-    unless params[:name].nil? || params[:tags].nil?
+    unless params[:name].nil?
       @name = params[:name]
+      @documents = Document.search(@name)
+    end
+    unless params[:tags].nil?
       @tags = params[:tags]
-
-      if !@tags.empty?
-        docs = Document.search(@name)
-        @documents = Array.new
-        docs.each do |d|
-          if @tags.in?(d.tag_list)
-            @documents.push(d)
-          end
-        end
-      else
-        @documents = Document.search(@name)
-      end
+      @documents = Document.tagged_with(@tags).where(visibility: true).paginate(page: params[:page])
     end
   end
 

@@ -1,11 +1,15 @@
 <tr>
 	<td><%= link_to user.name, user %></td>
 	<td><%= link_to user.email, user %></td>
-	<% if current_user.admin? && !current_user?(user) %>
+	<% if !current_user?(user) %>
 		<td>
 			<%= link_to "View Documents", documents_user_path(user) %> | 
 			<%= link_to "Edit", edit_user_path(user) %> | 
 			<%= link_to "Delete", user, method: :delete, data: { confirm: "You sure?" } %>
+		</td>
+	<% else %>
+		<td>
+			<%= link_to "Edit", edit_user_path(user) %>
 		</td>
 	<% end %>
 </tr>
