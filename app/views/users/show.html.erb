@@ -11,6 +11,10 @@
     		<td>Name: </td>
     		<td><%= @user.name %></td>
     	</tr>
+      <tr>
+        <td>Email: </td>
+        <td><%= @user.email %></td>
+      </tr>
     	<tr>
     		<td>User Type: </td>
     		<td><%= (@user.admin == true ? "Admin" : "User") %></td>
