@@ -1,6 +1,6 @@
 class DocumentsController < ApplicationController
-	before_action :signed_in_user, except: [:search, :download]
-  before_action :correct_user, only: [:edit, :update, :destroy]
+	 before_action :signed_in_user, except: [:search, :download]
+   before_action :correct_user, only: [:edit, :update, :destroy]
 
   def new
   	@document = current_user.documents.build
@@ -55,7 +55,7 @@ class DocumentsController < ApplicationController
     end
     unless params[:tags].nil?
       @tags = params[:tags]
-      @documents = Document.tagged_with(@tags).where(visibility: true).paginate(page: params[:page])
+      @documents = Document.tagged_with(@tags, :any => true).where(visibility: true).paginate(page: params[:page])
     end
   end
 

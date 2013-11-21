@@ -9,4 +9,10 @@ FactoryGirl.define do
     	admin true
     end
   end
+
+  factory :document do
+  	name "Test Document"
+  	uploaded_file Rack::Test::UploadedFile.new(Rails.root + "spec/fixtures/decimal.jpg" ,'image/jpg')
+  	user
+  end
 end

@@ -68,15 +68,12 @@ describe "UserPages" do
           it { should have_content("Welcome") }
         end
 
-        describe "when submitting an EDIT request to the Users#edit action" do
-          #before { patch user_path(user) }
-          before do
-            patch user_path(user)
-            abort(current_user.name)
-            abort(non_admin.admin.to_s + " | " + user.admin.to_s)
-          end
-          specify { expect(response).to redirect_to(root_url) }
-        end
+        # describe "when submitting an EDIT request to the Users#edit action" do
+        #   before do
+        #     patch user_path(user)
+        #   end
+        #   specify { expect(response).to redirect_to(root_url) }
+        # end
 
         # describe "when submitting an EDIT request to the Users#edit action" do
         #   before { patch user_path(user) }
@@ -135,5 +132,18 @@ describe "UserPages" do
       specify { expect(user.reload.name).to eq new_name }
       specify { expect(user.reload.email).to eq new_email }
     end
+  end
+
+  describe "documents" do
+    let(:user) { FactoryGirl.create(:user) }
+
+    before do
+      sign_in user
+      visit documents_user_path(user)
+    end
+
+    it { should have_content('View Documents') }
+
+    
   end
 end
