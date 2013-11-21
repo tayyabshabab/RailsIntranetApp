@@ -18,15 +18,17 @@
       <%= f.label :password_confirmation, "Confirm Password" %>
       <%= f.password_field :password_confirmation %>
 
-      <%= f.label :admin, "User Type" %>
-      <span class="radio">
-        <%= f.radio_button(:admin, "false") %>
-        <%= f.label(:admin_false, "User") %>
-      </span>
-      <span class="radio">
-        <%= f.radio_button(:admin, "true") %>
-        <%= f.label(:admin_true, "Admin") %>
-      </span>
+      <% if current_user.admin? %>
+        <%= f.label :admin, "User Type" %>
+        <span class="radio">
+          <%= f.radio_button(:admin, "false") %>
+          <%= f.label(:admin_false, "User") %>
+        </span>
+        <span class="radio">
+          <%= f.radio_button(:admin, "true") %>
+          <%= f.label(:admin_true, "Admin") %>
+        </span>
+      <% end %>
 
       <%= f.submit "Save changes", class: "btn btn-large btn-primary" %>
     <% end %>
