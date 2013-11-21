@@ -18,6 +18,7 @@ gem 'jbuilder'
 gem 'pg'
 gem "paperclip"
 gem "acts-as-taggable-on"
+gem 'unicorn'
 
 group :doc do
   gem 'sdoc', '0.3.20', require: false
