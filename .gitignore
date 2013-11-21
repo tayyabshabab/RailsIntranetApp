@@ -21,3 +21,5 @@ doc/
 
 # Ignore uploaded documents
 /public/documents
+
+.env
