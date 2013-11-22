@@ -15,4 +15,11 @@ FactoryGirl.define do
   	uploaded_file Rack::Test::UploadedFile.new(Rails.root + "spec/fixtures/decimal.jpg" ,'image/jpg')
   	user
   end
+
+  factory :wrong_user do
+    name ""
+    email "wrong"
+    password "pass"
+    password_confirmation "123"
+  end
 end
